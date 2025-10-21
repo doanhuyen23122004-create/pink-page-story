@@ -12,20 +12,20 @@ export const Header = () => {
           <h1 className="text-xl font-semibold text-foreground">Thư Viện Truyện</h1>
         </div>
         
-        <nav className="hidden md:flex items-center gap-1">
-          <Button variant="ghost" size="sm" className="gap-2">
+        <nav className="hidden md:flex items-center gap-2">
+          <Button variant="pill" size="sm" className="gap-2">
             <Home className="h-4 w-4" />
             Trang chủ
           </Button>
-          <Button variant="ghost" size="sm" className="gap-2">
+          <Button variant="pill" size="sm" className="gap-2">
             <BookMarked className="h-4 w-4" />
             Thể loại
           </Button>
-          <Button variant="ghost" size="sm" className="gap-2">
+          <Button variant="pill" size="sm" className="gap-2">
             <Bookmark className="h-4 w-4" />
             Dấu Trang
           </Button>
-          <Button variant="ghost" size="sm" className="gap-2">
+          <Button variant="pill" size="sm" className="gap-2">
             <History className="h-4 w-4" />
             Lịch sử
           </Button>
