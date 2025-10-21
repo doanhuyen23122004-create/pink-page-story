@@ -30,7 +30,7 @@ export function TableOfContents() {
 
   return (
     <Sidebar className={state === "collapsed" ? "w-14" : "w-64"} collapsible="icon">
-      <SidebarContent className="bg-sidebar">
+      <SidebarContent className="bg-sidebar pt-20">
         <SidebarGroup>
           <SidebarGroupLabel className="flex items-center gap-2 px-2">
             <BookMarked className="h-4 w-4" />
