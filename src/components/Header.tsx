@@ -5,21 +5,26 @@ import { GenresDropdown } from "@/components/GenresDropdown";
 import { BookmarksDialog } from "@/components/BookmarksDialog";
 import { HistoryDialog } from "@/components/HistoryDialog";
 import { SearchDialog } from "@/components/SearchDialog";
+import { chapters } from "@/data/chapters";
 
 interface HeaderProps {
+  storyTitle: string;
   bookmarkedChapters: number[];
   history: any[];
   onChapterSelect: (chapterId: number) => void;
   onClearHistory: () => void;
 }
 
-export const Header = ({ bookmarkedChapters, history, onChapterSelect, onClearHistory }: HeaderProps) => {
+export const Header = ({ storyTitle, bookmarkedChapters, history, onChapterSelect, onClearHistory }: HeaderProps) => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="container flex h-16 items-center justify-between px-4 gap-6">
         <div className="flex items-center gap-2">
           <BookOpen className="h-6 w-6 text-primary" />
-          <h1 className="text-xl font-semibold text-foreground">Thư Viện Truyện</h1>
+          <div className="flex flex-col">
+            <h1 className="text-xl font-semibold text-foreground">{storyTitle}</h1>
+            <span className="text-xs text-muted-foreground">Thư Viện Truyện</span>
+          </div>
         </div>
         
         <nav className="hidden md:flex items-center gap-2">
@@ -29,7 +34,14 @@ export const Header = ({ bookmarkedChapters, history, onChapterSelect, onClearHi
           </Button>
           <GenresDropdown />
           <BookmarksDialog 
-            bookmarkedChapters={bookmarkedChapters}
+            bookmarks={bookmarkedChapters.map(id => {
+              const chapter = chapters.find(ch => ch.id === id);
+              return {
+                chapterId: id,
+                chapterTitle: chapter?.title || "",
+                storyTitle: storyTitle
+              };
+            })}
             onChapterSelect={onChapterSelect}
           />
           <HistoryDialog 

@@ -4,14 +4,14 @@ import { TableOfContents } from "@/components/TableOfContents";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { StoryContent } from "@/components/StoryContent";
-import { chapters } from "@/data/chapters";
+import { chapters, storyTitle } from "@/data/chapters";
 import { useBookmarks } from "@/hooks/useBookmarks";
 import { useReadingHistory } from "@/hooks/useReadingHistory";
 import { toast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [currentChapterId, setCurrentChapterId] = useState(1);
-  const { isBookmarked, toggleBookmark, bookmarkedChapters } = useBookmarks();
+  const { isBookmarked, toggleBookmark, bookmarks } = useBookmarks();
   const { history, addToHistory, clearHistory } = useReadingHistory();
   
   const currentChapter = chapters.find(ch => ch.id === currentChapterId) || chapters[0];
@@ -19,7 +19,7 @@ const Index = () => {
   const hasNextChapter = currentChapterId < chapters.length;
 
   useEffect(() => {
-    addToHistory(currentChapter.id, currentChapter.title);
+    addToHistory(currentChapter.id, currentChapter.title, storyTitle);
   }, [currentChapterId]);
   
   const handlePrevChapter = () => {
@@ -37,7 +37,7 @@ const Index = () => {
   };
 
   const handleToggleBookmark = () => {
-    toggleBookmark(currentChapterId);
+    toggleBookmark(currentChapterId, currentChapter.title, storyTitle);
     toast({
       title: isBookmarked(currentChapterId) ? "Đã xóa dấu trang" : "Đã thêm dấu trang",
       description: `${currentChapter.title}`,
@@ -53,7 +53,8 @@ const Index = () => {
     <SidebarProvider>
       <div className="min-h-screen flex flex-col w-full">
         <Header 
-          bookmarkedChapters={bookmarkedChapters}
+          storyTitle={storyTitle}
+          bookmarkedChapters={bookmarks.map(b => b.chapterId)}
           history={history}
           onChapterSelect={handleChapterSelect}
           onClearHistory={clearHistory}

@@ -67,6 +67,7 @@ export const HistoryDialog = ({ history, onChapterSelect, onClearHistory }: Hist
                 onClick={() => onChapterSelect(item.chapterId)}
                 className="w-full text-left p-3 rounded-lg bg-accent/50 hover:bg-accent transition-colors"
               >
+                <p className="text-xs text-muted-foreground mb-1">{item.storyTitle}</p>
                 <h3 className="font-medium text-foreground">{item.chapterTitle}</h3>
                 <p className="text-sm text-muted-foreground">{formatTime(item.timestamp)}</p>
               </button>

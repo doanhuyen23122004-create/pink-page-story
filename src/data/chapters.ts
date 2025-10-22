@@ -5,6 +5,8 @@ export interface Chapter {
   content: string[];
 }
 
+export const storyTitle = "Vườn Hoa Hồng Kỳ Diệu";
+
 export const chapters: Chapter[] = [
   {
     id: 1,

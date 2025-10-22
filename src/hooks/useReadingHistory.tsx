@@ -5,6 +5,7 @@ const HISTORY_KEY = "reading-history";
 export interface HistoryItem {
   chapterId: number;
   chapterTitle: string;
+  storyTitle: string;
   timestamp: number;
 }
 
@@ -18,11 +19,11 @@ export const useReadingHistory = () => {
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
   }, [history]);
 
-  const addToHistory = (chapterId: number, chapterTitle: string) => {
+  const addToHistory = (chapterId: number, chapterTitle: string, storyTitle: string) => {
     setHistory(prev => {
       const filtered = prev.filter(item => item.chapterId !== chapterId);
       return [
-        { chapterId, chapterTitle, timestamp: Date.now() },
+        { chapterId, chapterTitle, storyTitle, timestamp: Date.now() },
         ...filtered
       ].slice(0, 20); // Keep last 20 items
     });

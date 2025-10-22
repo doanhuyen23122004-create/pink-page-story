@@ -7,17 +7,14 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Bookmark } from "lucide-react";
-import { chapters } from "@/data/chapters";
+import { BookmarkItem } from "@/hooks/useBookmarks";
 
 interface BookmarksDialogProps {
-  bookmarkedChapters: number[];
+  bookmarks: BookmarkItem[];
   onChapterSelect: (chapterId: number) => void;
 }
 
-export const BookmarksDialog = ({ bookmarkedChapters, onChapterSelect }: BookmarksDialogProps) => {
-  const bookmarkedChaptersList = chapters.filter(ch => 
-    bookmarkedChapters.includes(ch.id)
-  );
+export const BookmarksDialog = ({ bookmarks, onChapterSelect }: BookmarksDialogProps) => {
 
   return (
     <Dialog>
@@ -25,9 +22,9 @@ export const BookmarksDialog = ({ bookmarkedChapters, onChapterSelect }: Bookmar
         <Button variant="pill" size="sm" className="gap-2">
           <Bookmark className="h-4 w-4" />
           Dấu Trang
-          {bookmarkedChapters.length > 0 && (
+          {bookmarks.length > 0 && (
             <span className="ml-1 bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs">
-              {bookmarkedChapters.length}
+              {bookmarks.length}
             </span>
           )}
         </Button>
@@ -37,19 +34,19 @@ export const BookmarksDialog = ({ bookmarkedChapters, onChapterSelect }: Bookmar
           <DialogTitle className="text-foreground">Dấu Trang Của Bạn</DialogTitle>
         </DialogHeader>
         <div className="max-h-96 overflow-y-auto space-y-2">
-          {bookmarkedChaptersList.length === 0 ? (
+          {bookmarks.length === 0 ? (
             <p className="text-muted-foreground text-center py-8">
               Chưa có dấu trang nào
             </p>
           ) : (
-            bookmarkedChaptersList.map((chapter) => (
+            bookmarks.map((bookmark) => (
               <button
-                key={chapter.id}
-                onClick={() => onChapterSelect(chapter.id)}
+                key={bookmark.chapterId}
+                onClick={() => onChapterSelect(bookmark.chapterId)}
                 className="w-full text-left p-3 rounded-lg bg-accent/50 hover:bg-accent transition-colors"
               >
-                <h3 className="font-medium text-foreground">{chapter.title}</h3>
-                <p className="text-sm text-muted-foreground">Trang {chapter.pages}</p>
+                <p className="text-xs text-muted-foreground mb-1">{bookmark.storyTitle}</p>
+                <h3 className="font-medium text-foreground">{bookmark.chapterTitle}</h3>
               </button>
             ))
           )}
