@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { TableOfContents } from "@/components/TableOfContents";
 import { Header } from "@/components/Header";
@@ -6,15 +6,21 @@ import { Footer } from "@/components/Footer";
 import { StoryContent } from "@/components/StoryContent";
 import { chapters } from "@/data/chapters";
 import { useBookmarks } from "@/hooks/useBookmarks";
+import { useReadingHistory } from "@/hooks/useReadingHistory";
 import { toast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [currentChapterId, setCurrentChapterId] = useState(1);
-  const { isBookmarked, toggleBookmark } = useBookmarks();
+  const { isBookmarked, toggleBookmark, bookmarkedChapters } = useBookmarks();
+  const { history, addToHistory, clearHistory } = useReadingHistory();
   
   const currentChapter = chapters.find(ch => ch.id === currentChapterId) || chapters[0];
   const hasPrevChapter = currentChapterId > 1;
   const hasNextChapter = currentChapterId < chapters.length;
+
+  useEffect(() => {
+    addToHistory(currentChapter.id, currentChapter.title);
+  }, [currentChapterId]);
   
   const handlePrevChapter = () => {
     if (hasPrevChapter) {
@@ -37,11 +43,21 @@ const Index = () => {
       description: `${currentChapter.title}`,
     });
   };
+
+  const handleChapterSelect = (chapterId: number) => {
+    setCurrentChapterId(chapterId);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   
   return (
     <SidebarProvider>
       <div className="min-h-screen flex flex-col w-full">
-        <Header />
+        <Header 
+          bookmarkedChapters={bookmarkedChapters}
+          history={history}
+          onChapterSelect={handleChapterSelect}
+          onClearHistory={clearHistory}
+        />
         
         <div className="flex flex-1 w-full">
           <TableOfContents />

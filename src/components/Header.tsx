@@ -1,9 +1,19 @@
-import { BookOpen, Search, Settings, Home, BookMarked, Bookmark, History, User } from "lucide-react";
+import { BookOpen, Settings, Home, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { GenresDropdown } from "@/components/GenresDropdown";
+import { BookmarksDialog } from "@/components/BookmarksDialog";
+import { HistoryDialog } from "@/components/HistoryDialog";
+import { SearchDialog } from "@/components/SearchDialog";
 
-export const Header = () => {
+interface HeaderProps {
+  bookmarkedChapters: number[];
+  history: any[];
+  onChapterSelect: (chapterId: number) => void;
+  onClearHistory: () => void;
+}
+
+export const Header = ({ bookmarkedChapters, history, onChapterSelect, onClearHistory }: HeaderProps) => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="container flex h-16 items-center justify-between px-4 gap-6">
@@ -17,29 +27,20 @@ export const Header = () => {
             <Home className="h-4 w-4" />
             Trang chủ
           </Button>
-          <Button variant="pill" size="sm" className="gap-2">
-            <BookMarked className="h-4 w-4" />
-            Thể loại
-          </Button>
-          <Button variant="pill" size="sm" className="gap-2">
-            <Bookmark className="h-4 w-4" />
-            Dấu Trang
-          </Button>
-          <Button variant="pill" size="sm" className="gap-2">
-            <History className="h-4 w-4" />
-            Lịch sử
-          </Button>
+          <GenresDropdown />
+          <BookmarksDialog 
+            bookmarkedChapters={bookmarkedChapters}
+            onChapterSelect={onChapterSelect}
+          />
+          <HistoryDialog 
+            history={history}
+            onChapterSelect={onChapterSelect}
+            onClearHistory={onClearHistory}
+          />
         </nav>
         
         <div className="flex flex-1 items-center justify-center px-4 max-w-md">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Tìm kiếm truyện..."
-              className="pl-10 bg-background"
-            />
-          </div>
+          <SearchDialog onResultClick={onChapterSelect} />
         </div>
         
         <div className="flex items-center gap-2">
