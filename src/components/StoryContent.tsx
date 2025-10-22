@@ -9,6 +9,8 @@ interface StoryContentProps {
   onNextChapter: () => void;
   hasPrevChapter: boolean;
   hasNextChapter: boolean;
+  isBookmarked: boolean;
+  onToggleBookmark: () => void;
 }
 
 export const StoryContent = ({ 
@@ -16,7 +18,9 @@ export const StoryContent = ({
   onPrevChapter, 
   onNextChapter,
   hasPrevChapter,
-  hasNextChapter 
+  hasNextChapter,
+  isBookmarked,
+  onToggleBookmark
 }: StoryContentProps) => {
   return (
     <div 
@@ -31,8 +35,16 @@ export const StoryContent = ({
         <div className="bg-card/80 backdrop-blur-sm rounded-lg shadow-lg p-8 mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-3xl font-bold text-foreground">{chapter.title}</h2>
-            <Button variant="ghost" size="icon">
-              <Bookmark className="h-5 w-5" />
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={onToggleBookmark}
+              className="hover:text-primary"
+            >
+              <Bookmark 
+                className="h-5 w-5" 
+                fill={isBookmarked ? "currentColor" : "none"}
+              />
             </Button>
           </div>
           

@@ -5,9 +5,12 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { StoryContent } from "@/components/StoryContent";
 import { chapters } from "@/data/chapters";
+import { useBookmarks } from "@/hooks/useBookmarks";
+import { toast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [currentChapterId, setCurrentChapterId] = useState(1);
+  const { isBookmarked, toggleBookmark } = useBookmarks();
   
   const currentChapter = chapters.find(ch => ch.id === currentChapterId) || chapters[0];
   const hasPrevChapter = currentChapterId > 1;
@@ -25,6 +28,14 @@ const Index = () => {
       setCurrentChapterId(prev => prev + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  };
+
+  const handleToggleBookmark = () => {
+    toggleBookmark(currentChapterId);
+    toast({
+      title: isBookmarked(currentChapterId) ? "Đã xóa dấu trang" : "Đã thêm dấu trang",
+      description: `${currentChapter.title}`,
+    });
   };
   
   return (
@@ -46,6 +57,8 @@ const Index = () => {
               onNextChapter={handleNextChapter}
               hasPrevChapter={hasPrevChapter}
               hasNextChapter={hasNextChapter}
+              isBookmarked={isBookmarked(currentChapterId)}
+              onToggleBookmark={handleToggleBookmark}
             />
           </div>
         </div>
